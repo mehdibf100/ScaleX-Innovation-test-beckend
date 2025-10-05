@@ -1,22 +1,21 @@
-# Use official Node.js runtime
 FROM node:18-alpine
 
-# Set working directory
 WORKDIR /app
 
-# Copy package files
+# Copy package.json and lock file
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci
+RUN npm ci --only=production
 
 # Copy the rest of the app
 COPY . .
 
-# Build TypeScript
-RUN npm run build   
+# Generate Prisma client
+RUN npx prisma generate
+
 # Expose port
 EXPOSE 3000
 
-# Run the compiled JS
-CMD ["node", "dist/index.js"]
+# Start the app
+CMD ["node", "dist/app.js"]
