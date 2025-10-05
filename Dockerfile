@@ -1,20 +1,23 @@
-# Use an official Node.js runtime as a parent image
+# Use official Node.js runtime
 FROM node:18-alpine
 
 # Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY package.json package-lock.json ./
+# Copy package files
+COPY package*.json ./
 
 # Install dependencies
-RUN npm ci --only=production
+RUN npm ci
 
-# Copy the rest of the application
+# Copy the rest of the app
 COPY . .
 
-# Expose the port your app runs on
+# Build TypeScript
+RUN npm run build   # or 'tsc' if you don't have a build script
+
+# Expose port
 EXPOSE 3000
 
-# Start the application
-CMD ["node", "src/index.ts"]
+# Run the compiled JS
+CMD ["node", "dist/index.js"]
