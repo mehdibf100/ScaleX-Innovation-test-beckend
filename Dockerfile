@@ -5,14 +5,11 @@ WORKDIR /app
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install dependencies (omit dev for production)
+# Install only production dependencies
 RUN npm ci --omit=dev
 
-# Copy source code
-COPY . .
-
-# Build the app
-RUN npm run build
+# Copy built files
+COPY dist ./dist
 
 EXPOSE 4000
 
