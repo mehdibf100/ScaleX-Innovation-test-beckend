@@ -14,8 +14,7 @@ RUN npm ci
 COPY . .
 
 # Build TypeScript
-RUN npm run build   # or 'tsc' if you don't have a build script
-
+RUN npm run build   
 # Expose port
 EXPOSE 3000
 
