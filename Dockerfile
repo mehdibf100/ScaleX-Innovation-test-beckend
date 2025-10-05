@@ -1,11 +1,20 @@
-FROM node:20-alpine
+# Use an official Node.js runtime as a parent image
+FROM node:18-alpine
 
+# Set working directory
 WORKDIR /app
 
-COPY package*.json ./
-RUN npm ci --omit=dev
+# Copy package.json and package-lock.json
+COPY package.json package-lock.json ./
 
-COPY dist ./dist
+# Install dependencies
+RUN npm ci --only=production
 
-EXPOSE 4000
-CMD ["node", "dist/index.js"]
+# Copy the rest of the application
+COPY . .
+
+# Expose the port your app runs on
+EXPOSE 3000
+
+# Start the application
+CMD ["node", "src/index.js"]
